@@ -3,6 +3,19 @@ from core.Carrito import Carrito
 from .models import Producto
 from .forms import *
 from django.contrib import messages
+from rest_framework import viewsets
+from .serializers import *
+
+# serializers
+
+class ProductoViewset(viewsets.ModelViewSet):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializers 
+
+class TipoProductoViewset(viewsets.ModelViewSet):
+    queryset = tipoProducto.objects.all()
+    serializer_class = TipoProductoSerializers 
+
 # Create your views here.
 
 def index(request):

@@ -1,9 +1,15 @@
-from django.urls import path
+from django.urls import path, include
 from.views import *
+from rest_framework import routers
 
 ## VIEWS -> URLS -> HTML
 
+router = routers.DefaultRouter()
+router.register('productos', ProductoViewset)
+router.register('TipoProductos', TipoProductoViewset)
+
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('',index, name="index"),
     path('about/',about, name="about"),
     path('cart/',cart, name="cart"),

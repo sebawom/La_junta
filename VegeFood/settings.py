@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'crispy_forms',
     'paypalcheckoutsdk',
+    'rest_framework',
 ]
 CRISPY_TEMPLATE_PACK='bootstrap4'
 
