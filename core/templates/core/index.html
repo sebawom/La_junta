@@ -1,6 +1,26 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% block contenido %}
+<script>
+    function eliminar_Productos(id){
+        swal.fire({
+            "title" : "¿estas seguro?",
+            "text" : "esta accion no se puede deshacer",
+            "icon" : "question",
+            "showCancelButton" : true,
+            "cancelButtonText" : "No, Cancelar",
+            "confirmButtonText" : "Si, Eliminar",
+            "reverseButtons" :true
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "/eliminar-productos/"+id+"/"
+            }
+
+        })
+
+    }
+</script>
 
 	<!-- hero area -->
 	<div class="hero-area hero-bg">
@@ -9,8 +29,8 @@
 				<div class="col-lg-9 offset-lg-2 text-center">
 					<div class="hero-text">
 						<div class="hero-text-tablecell">
-							<p class="subtitle">Tu proxima obseción</p>
-							<h1>Ventas de Plantas</h1>
+							<p class="subtitle">Tu proxima obsesión</p>
+							<h1>Garden Resort</h1>
 							<div class="hero-btns">
 								<a href="{% url 'shop' %}"  class="boxed-btn">Catalogo</a>
 								<a href="{% url 'contact' %}" class="bordered-btn">Contactanos</a>
@@ -56,8 +76,8 @@
 							<i class="fas fa-sync"></i>
 						</div>
 						<div class="content">
-							<h3>Rembolso</h3>
-							<p>Obten tu rembolso dentro de 3 dias!</p>
+							<h3>Reembolso</h3>
+							<p>Obten tu reembolso dentro de 3 dias!</p>
 						</div>
 					</div>
 				</div>
@@ -79,25 +99,84 @@
 			</div>
 				{% load humanize %}
 			<div class="row">
-				{% for p in productos %}
+				{% for aux in entity %}
+				{% if aux.precio > 0 %}
+
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							{% if p.imagen %}
-							<a href="{% url 'singleproduct' %}"><img src="{{ p.imagen.url }}" alt=""></a>
+							{% if aux.imagen %}
+							<a href="{% url 'singleproduct' aux.id %}"><img src="{{ aux.imagen.url }}" alt=""></a>
 							{% endif %}
 						</div>
-						<h3>{{ p.nombre | capfirst}}</h3>
-						<p class="product-price"><span>Por Unidad</span> ${{ p.precio | intcomma }} </p>
-						<a href="{% url 'Add_index' p.id %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
+						<h3>{{ aux.nombre | capfirst}}</h3>
+						
+						{% if user.is_authenticated %}
+
+						<div class="pricing">
+							<p class="price"><span class="mr-2 price-dc" ><del> {{ aux.precio }} </del> </span>{{1700}}</p>
+						</div>	
+						{% else %}
+						<div class="pricing">
+							<p class="price"><span class="mr-2 price-dc" > {{ aux.precio }}  </span></p>
+						</div>	
+						{% endif %}
+
+						{% if admin.is_authenticated %}
+
+						{% if aux.stock > 0 %}
+						<span>Stock: {{ aux.stock }}</span>
+						{% else %}
+						<span>No hay stock </span>
+						<a href="{% url 'carro:cart_add' aux.id %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
+
+						{% endif %}
+<hr>
+						{% if perms.core.change_producto %}
+						<a href="{% url 'modificar_productos' aux.id %}" class="btn btn-info btn-sm">Modificar</a>
+						{% endif %}
+						{% if perms.core.delete_producto %}
+
+						 <a href="#" onclick="eliminar_Productos({{ aux.id }})" class="btn btn-danger btn-sm">Eliminar</a>
+<hr>
+						 {% endif %}
+						 <a href="{% url 'carro:cart_add' aux.id %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
+
+						{% else %}
+						
+						{% if aux.stock > 0 %}
+						<span>Stock: {{ aux.stock }}</span>
+						<hr>
+						<a href="{% url 'carro:cart_add' aux.id %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
+
+						{% else %}
+						<span>No hay stock </span>
+
+						{% endif %}
+
+                        {% endif %}
+
+						
+
+
 					</div>
 				</div>
+				{% endif %}
+
 			{% endfor %}
+			{% if user.is_authenticated %} {% if perms.app.view_producto %}
+			<a href="{% url 'listar_productos' %}" class="btn btn-primary " class="btn-center">Ver listado de productos</a>
+			{% endif %}
+			{% endif %}
+
 			</div>
 
 		</div>
+
 	</div>
-	
+
+	<div>{% include 'core/paginator.html' %}</div>
+
 	<!-- end product section -->
 
 	<!-- cart banner section -->
@@ -110,7 +189,7 @@
                     	<div class="price-box">
                         	<div class="inner-price">
                                 <span class="price">
-                                    <strong>30%</strong> <br> de descuento
+                                    <strong>5%</strong> <br> de descuento
                                 </span>
                             </div>
                         </div>
@@ -119,12 +198,10 @@
                 </div>
                 <!--Content Column-->
                 <div class="content-column col-lg-6">
-					<h3><span class="orange-text">Oferta</span> del mes</h3>
-                    <h4>Planta 1</h4>
-                    <div class="text">Esta planta tiene un 30% de descuento por este mes</div>
+                    <h4>suscribete</h4>
+                    <div class="text">dona para tener un 5% de descuento en todos los productos</div>
                     <!--Countdown Timer-->
-                    <div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">03</span>Dias</div></div> <div class="counter-column"><div class="inner"><span class="count">02</span>Horas</div></div>  <div class="counter-column"><div class="inner"><span class="count">50</span>Minutos</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div></div></div>
-                	<a href="{% url 'cart' %}" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
+                	<a href="{% url 'donacion' %}" class="cart-btn mt-3"><i class=""></i> suscribete aqui</a>
 				</div>
             </div>
         </div>

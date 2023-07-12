@@ -25,6 +25,7 @@ class Producto(models.Model):
     stock = models.IntegerField()
     tipo = models.ForeignKey(tipoProducto, on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to="productos", null=True)
+
     def __str__(self):
         return self.nombre
 
@@ -36,6 +37,14 @@ class Contacto(models.Model):
     tipo_consulta = models.IntegerField(choices=opciones_consulta)
     mensaje = models.TextField()
     avisos = models.BooleanField()
+
+    def __str__(self):
+        return self.nombre 
+
+class Compra(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    usuario_id = models.IntegerField()
+    
 
     def __str__(self):
         return self.nombre 

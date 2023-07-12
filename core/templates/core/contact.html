@@ -4,15 +4,18 @@
 
 {% block contenido %}
 
-<div class="breadcrumb-section breadcrumb-bg">
+<br><br><br><br><b></b>
+<div class="card">
+  <div class="card-body">
  <div class="container">
     <table id="tablacontactos"  > 
   <div class="row">
     <div class="col-12 col-md-6 offset-md-3">
         <form action="" class="" method="post">
 
-            <h2>Contactanos</h2>  
-              {{ form  }}
+            <h2>Contactanos</h2> 
+            <hr> 
+              {{ form | crispy}}
            
             {% csrf_token %} 
            <br>
@@ -25,6 +28,8 @@
            
     </div>
   </div>
+</div>
+</div>
 
 
 </table>

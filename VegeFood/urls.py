@@ -20,8 +20,12 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include('core.urls'))
+     path('admin/', admin.site.urls),
+    path('', include('core.urls')),
+    path('carro/', include('carro.urls')),
+    path('accounts/',include('django.contrib.auth.urls')),
+    path('pedidos/', include('pedidos.urls')),
+
 ]
 
 if settings.DEBUG:

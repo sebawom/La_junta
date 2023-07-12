@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-mt=8@6-uedj9#aow&0x0+9g%gp4rr783bpm688%g$5f8c%!zuh
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Application definition
 
@@ -46,8 +48,15 @@ INSTALLED_APPS = [
     'crispy_forms',
     'paypalcheckoutsdk',
     'rest_framework',
+    'crispy_bootstrap5',
+    'carro',
+    'mathfilters',
+    'pedidos',
+    
+    
 ]
-CRISPY_TEMPLATE_PACK='bootstrap4'
+
+CRISPY_TEMPLATE_PACK='bootstrap5'
 
 X_FRAME_OPTIONS='SAMEORIGIN'
 MIDDLEWARE = [
@@ -73,11 +82,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.carrito_proceso.total_carrito'
+                'carro.context_processor.importe_total_carro',
+                'carro.context_processor.cantidad_carro',
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'VegeFood.wsgi.application'
 
@@ -150,3 +161,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+#crispy
+CRISPY_ALLOWED_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
